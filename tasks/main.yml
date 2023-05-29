@@ -23,4 +23,31 @@
     remote_src: true
     src: "{{ ansible_env.HOME }}/src/ntfy-alertmanager/ntfy-alertmanager"
     dest: /usr/local/bin/
+    mode: 0755
+  become: true
+
+- name: Ensure configuration directory for ntfy-alertmanager
+  ansible.builtin.file:
+    path: /etc/ntfy-alertmanager
+    state: directory
+    mode: 0755
+  become: true
+
+- name: Configure ntfy-alertmanager
+  ansible.builtin.template:
+    src: config.j2
+    dest: /etc/ntfy-alertmanager/config
+  become: true
+
+- name: Copy systemd service file for ntfy-alertmanager
+  ansible.builtin.copy:
+    src: ntfy-alertmanager.service
+    dest: /etc/systemd/system/ntfy-alertmanager.service
+  become: true
+
+- name: Ensure ntfy-alertmanager service is enabled
+  ansible.builtin.service:
+    name: ntfy-alertmanager
+    enabled: true
+    state: started
   become: true

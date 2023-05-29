@@ -1,0 +1,12 @@
+[Unit]
+Description=ntfy-alertmanager server
+After=network.target
+Wants=ntfy.service
+
+[Service]
+User=ntfy
+Group=ntfy
+ExecStart=/usr/local/bin/ntfy-alertmanager
+
+[Install]
+WantedBy=multi-user.target
